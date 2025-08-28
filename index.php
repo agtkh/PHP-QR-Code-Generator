@@ -22,6 +22,10 @@ function main(): void
         $imageSize = isset($_GET['size']) ? (int)$_GET['size'] : 256;
         $margin = isset($_GET['margin']) ? (int)$_GET['margin'] : 20;
 
+        // 画像サイズとマージンの制限
+        if ($imageSize < 21 || $imageSize > 2048) throw new \InvalidArgumentException('Image size must be between 21 and 2048 pixels.');
+        if ($margin < 0 || $margin > $imageSize / 2) throw new \InvalidArgumentException('Margin must be between 0 and half of the image size.');
+
         // データ入力 (base64 > bytes > text の優先順位)
         if (isset($_GET['base64'])) {
             $decoded = base64_decode($_GET['base64'], true);
