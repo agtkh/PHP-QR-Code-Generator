@@ -320,7 +320,7 @@ class QrCodeGenerator
         $this->drawFinderPattern(-1, $moduleCount - 8);
 
         if ($alignCount > 0) {
-            $spacing = intval(($moduleCount - 13) / ($alignCount - 1));
+            $spacing = ($alignCount !== 1) ? intval(($moduleCount - 13) / ($alignCount - 1)) : 0;
             for ($i = 0; $i < $alignCount; $i++) {
                 for ($j = 0; $j < $alignCount; $j++) {
                     $x = $moduleCount - 9 - $j * $spacing;
