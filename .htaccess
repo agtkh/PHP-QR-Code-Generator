@@ -1,15 +1,26 @@
-# ディレクトリの内容が一覧表示されるのを防ぎます。
-# これにより、意図しないファイルへのアクセスを防ぎ、セキュリティが向上します。
+# ディレクトリリスティングの禁止
 Options -Indexes
 
-# エラー発生時にサーバーの詳細な情報を隠蔽します。
+# サーバー署名を非表示
 ServerSignature Off
 
-<IfModule mod_rewrite.c>
-    # 将来的に `index.php` を隠蔽した綺麗なURL (例: /qr?text=...) を実装する場合、
-    # 以下のコメントを解除してルールを記述します。
-    # RewriteEngine On
-    # RewriteCond %{REQUEST_FILENAME} !-f
-    # RewriteCond %{REQUEST_FILENAME} !-d
-    # RewriteRule . index.php [L]
-</IfModule>
+# 機密情報を含むファイルへのアクセスを禁止
+<FilesMatch "^(\.(git|ht)|README|LICENSE|composer|package)">
+    Require all denied
+</FilesMatch>
+
+# index.phpを除くPHPファイルへの直接アクセスを禁止
+<FilesMatch "\.php$">
+    Require all denied
+</FilesMatch>
+<Files "index.php">
+    Require all granted
+</Files>
+
+# URLリライティングの例 (オプション)
+#<IfModule mod_rewrite.c>
+#    RewriteEngine On
+#    RewriteCond %{REQUEST_FILENAME} !-f
+#    RewriteCond %{REQUEST_FILENAME} !-d
+#    RewriteRule . index.php [L]
+#</IfModule>
