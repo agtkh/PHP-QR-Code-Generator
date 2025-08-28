@@ -1,0 +1,15 @@
+# ディレクトリの内容が一覧表示されるのを防ぎます。
+# これにより、意図しないファイルへのアクセスを防ぎ、セキュリティが向上します。
+Options -Indexes
+
+# エラー発生時にサーバーの詳細な情報を隠蔽します。
+ServerSignature Off
+
+<IfModule mod_rewrite.c>
+    # 将来的に `index.php` を隠蔽した綺麗なURL (例: /qr?text=...) を実装する場合、
+    # 以下のコメントを解除してルールを記述します。
+    # RewriteEngine On
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteRule . index.php [L]
+</IfModule>
