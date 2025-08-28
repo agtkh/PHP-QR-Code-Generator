@@ -101,9 +101,9 @@ class QrCodeGenerator
         $moduleWidth = $drawWidth / $matrixSize;
         $moduleHeight = $drawHeight / $matrixSize;
 
-        $image = imagecreatetruecolor($this->imageSize, $this->imageSize);
-        $colors = [imagecolorallocate($image, 255, 255, 255), imagecolorallocate($image, 0, 0, 0)];
-        imagefill($image, 0, 0, $colors[0]);
+        $image = \imagecreatetruecolor($this->imageSize, $this->imageSize);
+        $colors = [\imagecolorallocate($image, 255, 255, 255), \imagecolorallocate($image, 0, 0, 0)];
+        \imagefill($image, 0, 0, $colors[0]);
 
         for ($y = 0; $y < $matrixSize; $y++) {
             for ($x = 0; $x < $matrixSize; $x++) {
@@ -113,7 +113,7 @@ class QrCodeGenerator
                     $right = (int)round($this->margin + ($x + 1) * $moduleWidth - 1);
                     $bottom = (int)round($this->margin + ($y + 1) * $moduleHeight - 1);
                     if ($right >= $left && $bottom >= $top) {
-                        imagefilledrectangle($image, $left, $top, $right, $bottom, $colors[$this->matrix[$y][$x]]);
+                        \imagefilledrectangle($image, $left, $top, $right, $bottom, $colors[$this->matrix[$y][$x]]);
                     }
                 }
             }
