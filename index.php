@@ -39,7 +39,7 @@ function main(): void
             $data = array_map('ord', str_split($_GET['text']));
         } else {
             // デフォルトのサンプルQRコードを生成
-            $data = array_map('ord', str_split('https://github.com/google/gemini-cli'));
+            $data = array_map('ord', str_split('https://github.com/agtkh/'));
         }
 
         // バージョン
