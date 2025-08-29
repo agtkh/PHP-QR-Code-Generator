@@ -52,8 +52,30 @@ class QrCodeGenerator
         $this->versionInfo = self::getVersionInfo($this->version, $this->errorCorrectionLevel);
     }
 
+    private function validateDataCapacity(array $data, EncMode $encodingMode): void
+    {
+        // NOTE: This implementation only considers BYTE mode.
+        $charCountBits = $this->versionInfo->charCountBits;
+        $modeIndicatorBits = 4;
+
+        $requiredBits = $modeIndicatorBits + $charCountBits + (count($data) * 8);
+        $capacityBits = $this->versionInfo->dataCodewordCount * 8;
+
+        if ($requiredBits > $capacityBits) {
+            $providedBytes = count($data);
+            $capacityBytes = floor(($capacityBits - $modeIndicatorBits - $charCountBits) / 8);
+            throw new \InvalidArgumentException(
+                "Data is too long for the selected version and error correction level. " .
+                "Version: {$this->versionInfo->version}-{$this->errorCorrectionLevel->name}, " .
+                "Capacity: {$capacityBytes} bytes, " .
+                "Provided: {$providedBytes} bytes."
+            );
+        }
+    }
+
     public function render(array $data, EncMode $encodingMode): \GdImage|bool
     {
+        $this->validateDataCapacity($data, $encodingMode);
         $dataCodewords = $this->buildDataCodewords($data, $encodingMode);
         $finalBitStream = $this->interleaveBlocks($dataCodewords);
 
